@@ -20,14 +20,14 @@ function App() {
   }
 
   return (
-    <div className="container">
+    <div className="container-lg">
       <h1>Test React with CRUD</h1>
       <div className="row">
-        <div className="col">
+        <div className="col-lg-4">
           <h2>Add user</h2>
           <AddUserForm addUser={addUser} />
         </div>
-        <div className="col">
+        <div className="col-lg-8">
           <h2>View users</h2>
           <UserTable users={users} />
         </div>
