@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const urlAPI = new URL("/kholehk/FakeJSON/users", "https://my-json-server.typicode.com");
 
-async function getUsers(id = '') {
+async function getUsersFromAPI(id = '') {
   const url = new URL(`${id}`, urlAPI);
 
   try {
@@ -14,17 +14,18 @@ async function getUsers(id = '') {
   }
 };
 
-async function postUser(user) {
+async function postUserToAPI(user) {
   const url = new URL(urlAPI);
 
   try {
-    await axios.post(url, user);
+    const response = await axios.post(url, user);
+    return response.data;
   } catch (error) {
     console.error(error);
   }
 };
 
-async function putUser(id, user) {
+async function putUserToAPI(id, user) {
   const url = new URL(`${id}`, urlAPI);
 
   try {
@@ -34,7 +35,7 @@ async function putUser(id, user) {
   }
 };
 
-async function deleteUser(id) {
+async function deleteUserFromAPI(id) {
   const url = new URL(`${id}`, urlAPI);
 
   try {
@@ -44,4 +45,4 @@ async function deleteUser(id) {
   }
 };
 
-export { getUsers, putUser, postUser, deleteUser };
+export { getUsersFromAPI, postUserToAPI, putUserToAPI, deleteUserFromAPI };
