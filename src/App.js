@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UserTable from './table/UserTable';
 import AddUserForm from './forms/AddUserForm';
-import { getUsersFromAPI, postUserToAPI } from './utils/api';
+import { getUsersFromAPI, postUserToAPI, deleteUserFromAPI } from './utils/api';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -13,10 +13,15 @@ function App() {
   }, []);
 
   async function addUser(newUser) {
-    const response = await postUserToAPI(newUser);
-    console.log(response);
-    debugger;
-    setUsers([...users], newUser);
+    const addedUser = await postUserToAPI(newUser);
+
+    setUsers([...users, addedUser]);
+  }
+
+  async function deleteUser(wasteUserId) {
+    await deleteUserFromAPI(wasteUserId);
+
+    setUsers(users.filter((user) => user.id !== wasteUserId));
   }
 
   return (
@@ -29,7 +34,7 @@ function App() {
         </div>
         <div className="col-lg-8">
           <h2>View users</h2>
-          <UserTable users={users} />
+          <UserTable users={users} deleteUser={deleteUser} />
         </div>
       </div>
     </div>

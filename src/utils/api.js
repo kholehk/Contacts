@@ -36,10 +36,11 @@ async function putUserToAPI(id, user) {
 };
 
 async function deleteUserFromAPI(id) {
-  const url = new URL(`${id}`, urlAPI);
+  const url = new URL(`${urlAPI.pathname}/${id}`, urlAPI);
 
   try {
-    await axios.delete(url);
+    const response = await axios.delete(url);
+    return response.status;
   } catch (error) {
     console.error(error);
   }
