@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import UserTable from './table/UserTable';
 import AddUserForm from './forms/AddUserForm';
-import { getUsersFromAPI, postUserToAPI, deleteUserFromAPI } from './utils/api';
+import EditUserForm from './forms/EditUserForm';
+import { getUsersFromAPI, postUserToAPI, deleteUserFromAPI, putUserToAPI } from './utils/api';
 
 const fields = [
   { key: "name", label: "Name" }, //first element scope="row" in table
@@ -18,6 +19,8 @@ const fields = [
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     getUsersFromAPI()
@@ -29,6 +32,19 @@ function App() {
     const addedUser = await postUserToAPI(newUser);
 
     setUsers([...users, addedUser]);
+    setCurrentUser({});
+  }
+
+  function editUser(current) {
+    setEditing(true);
+    setCurrentUser(current);
+  }
+
+  async function updateUser(id, receivedUser) {
+    const userFromApi = await putUserToAPI(id, receivedUser);
+
+    setEditing(false);
+    setUsers(users.map(user => (user.id === id ? userFromApi : user)));
   }
 
   async function deleteUser(wasteUser) {
@@ -44,12 +60,14 @@ function App() {
       <h1>Test React with CRUD</h1>
       <div className="row">
         <div className="col-lg-4">
-          <h2>Add user</h2>
-          <AddUserForm fields={fields} addUser={addUser} />
+          {editing
+            ? <EditUserForm fields={fields} currentUser={currentUser} updateUser={updateUser} />
+            : <AddUserForm fields={fields} addUser={addUser} />
+          }
         </div>
         <div className="col-lg-8">
           <h2>View users</h2>
-          <UserTable fields={fields} users={users} deleteUser={deleteUser} />
+          <UserTable fields={fields} users={users} editUser={editUser} deleteUser={deleteUser} />
         </div>
       </div>
     </div>

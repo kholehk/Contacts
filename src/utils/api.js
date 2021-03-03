@@ -27,8 +27,8 @@ async function postUserToAPI(user) {
   }
 };
 
-async function putUserToAPI(id, user) {
-  const url = new URL(`${id}`, urlAPI);
+async function putUserToAPI(user) {
+  const url = new URL(`${urlAPI.pathname} / ${user.id}`, urlAPI);
 
   try {
     const response = await axios.put(url, user);
