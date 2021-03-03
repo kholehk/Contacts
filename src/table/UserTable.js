@@ -1,49 +1,51 @@
 import React from 'react';
 
+function TableRow(props) {
+  const { fields, user, deleteUser } = props;
+
+  return (
+    fields.map((field, idx) =>
+      idx
+        ? <td key={field.key}>{user[field.key]}</td>
+        : <th key={field.key} scope="row">
+          <strong className="row">{user[field.key]}</strong>
+          <div className="row flex-nowrap">
+            <button className="btn btn-sm btn-primary col-auto">Edit</button>
+            <button
+              className="btn btn-sm btn-danger col-auto mx-1"
+              onClick={async () => { await deleteUser(user.id) }}
+            >Remove</button>
+          </div>
+        </th>
+    )
+  )
+}
+
 function TableBody(props) {
-  const { users, deleteUser } = props;
+  const { fields, users, deleteUser } = props;
 
   return (
     users.map(user => (
       <tr key={user.id}>
-        <th scope="row">{user.name}</th>
-        <td>{user.surname}</td>
-        <td>{user.birthday}</td>
-        <td>{user.phone}</td>
-        <td>{user.email}</td>
-        <td>
-          <span className="row">{user.date}</span>
-          <button className="btn btn-sm btn-primary">Edit</button>
-          <button
-            className="btn btn-sm btn-danger mx-1"
-            onClick={async () => { await deleteUser(user.id) }}
-          >Remove</button>
-        </td>
+        <TableRow fields={fields} user={user} deleteUser={deleteUser} />
       </tr>)
     )
   );
 }
 
 function UserTable(props) {
-  const { users, deleteUser } = props;
-
-  // const [currentUser, setCurrentUser] = useState(null);
+  const { fields, users, deleteUser } = props;
 
   return (
-    <table className="table overflow-hidden">
+    <table className="table">
       <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Surname</th>
-          <th scope="col">BirthDay</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Email</th>
-          <th scope="col">Create/Update</th>
+          {fields.map(field => <th key={field.key} scope="col">{field.label}</th>)}
         </tr>
       </thead>
       <tbody>
         {users.length > 0
-          ? <TableBody users={users} deleteUser={deleteUser} />
+          ? <TableBody fields={fields} users={users} deleteUser={deleteUser} />
           : <tr><td colSpan="7">No Users</td></tr>
         }
       </tbody>

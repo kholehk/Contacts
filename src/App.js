@@ -3,6 +3,15 @@ import UserTable from './table/UserTable';
 import AddUserForm from './forms/AddUserForm';
 import { getUsersFromAPI, postUserToAPI, deleteUserFromAPI } from './utils/api';
 
+const fields = [
+  { key: "name", label: "Name" }, //first element scope="row" in table
+  { key: "surname", label: "Surname" },
+  { key: "birthday", label: "Birthday", type: "date" },
+  { key: "phone", label: "Phone", type: "tel" },
+  { key: "email", label: "Email", type: "email" },
+  { key: "timestamp", label: "Create/Update", type: "datetime-local", calculeted: true },
+];
+
 function App() {
   const [users, setUsers] = useState([]);
 
@@ -30,11 +39,11 @@ function App() {
       <div className="row">
         <div className="col-lg-4">
           <h2>Add user</h2>
-          <AddUserForm addUser={addUser} />
+          <AddUserForm fields={fields} addUser={addUser} />
         </div>
         <div className="col-lg-8">
           <h2>View users</h2>
-          <UserTable users={users} deleteUser={deleteUser} />
+          <UserTable fields={fields} users={users} deleteUser={deleteUser} />
         </div>
       </div>
     </div>

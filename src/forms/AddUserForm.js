@@ -1,40 +1,32 @@
 import React, { useState } from 'react';
 
-const elements = [
-  { id: "name", label: "Name" },
-  { id: "surname", label: "Surname" },
-  { id: "birthday", label: "Birthday", type: "date" },
-  { id: "phone", label: "Phone", type: "tel" },
-  { id: "email", label: "Email", type: "email" },
-];
-
 function Input(props) {
-  const { element, user, handleInputChange } = props;
+  const { field, user, handleInputChange } = props;
 
   return (
     <div className="mb-3">
       <label
         className="form-label"
-        htmlFor={element.id}
-      >{element.label}</label>
+        htmlFor={field.key}
+      >{field.label}</label>
       <input
-        type={element.type || "text"}
+        type={field.type || "text"}
         className="form-control"
-        id={element.id}
-        name={element.id}
-        value={user[element.id]}
+        id={field.key}
+        name={field.key}
+        value={user[field.key]}
         onChange={handleInputChange}
-        aria-describedby={element.label}
+        aria-describedby={field.label}
       />
     </div>
   );
 }
 
 function AddUserForm(props) {
-  const { addUser } = props;
+  const { fields, addUser } = props;
 
-  const initialFormState = elements.reduce((acc, cur) => {
-    acc[cur.id] = "";
+  const initialFormState = fields.reduce((acc, cur) => {
+    acc[cur.key] = "";
 
     return acc;
   }, { id: null });
@@ -48,16 +40,19 @@ function AddUserForm(props) {
   }
 
   return (
-    <form className="mb-3" onSubmit={async (event) => {
-      event.preventDefault();
-      await addUser({ ...user, date: Date.now() });
-      setUser(initialFormState);
-    }}>
-      {elements.map(element => {
+    <form
+      className="mb-3"
+      onSubmit={async (event) => {
+        event.preventDefault();
+        await addUser({ ...user, timestamp: Date.now() });
+        setUser(initialFormState);
+      }}>
+      {fields.map(field => {
+        if (field.calculeted) return "";
         return (
           <Input
-            key={element.id}
-            element={element}
+            key={field.key}
+            field={field}
             user={user}
             handleInputChange={handleInputChange}
           />
