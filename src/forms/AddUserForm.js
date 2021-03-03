@@ -48,7 +48,7 @@ function AddUserForm(props) {
         setUser(initialFormState);
       }}>
       {fields.map(field => {
-        if (field.calculeted) return "";
+        if (field.calculate) return "";
         return (
           <Input
             key={field.key}

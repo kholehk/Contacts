@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { format } from 'date-fns';
 import UserTable from './table/UserTable';
 import AddUserForm from './forms/AddUserForm';
 import { getUsersFromAPI, postUserToAPI, deleteUserFromAPI } from './utils/api';
@@ -9,7 +10,10 @@ const fields = [
   { key: "birthday", label: "Birthday", type: "date" },
   { key: "phone", label: "Phone", type: "tel" },
   { key: "email", label: "Email", type: "email" },
-  { key: "timestamp", label: "Create/Update", type: "datetime-local", calculeted: true },
+  {
+    key: "timestamp", label: "Create/Update", type: "datetime-local",
+    calculate: (stamp) => Number.isNaN(+stamp) ? "" : format(+stamp, "dd.MM.yyyy HH:mm")
+  },
 ];
 
 function App() {
@@ -27,10 +31,12 @@ function App() {
     setUsers([...users, addedUser]);
   }
 
-  async function deleteUser(wasteUserId) {
-    await deleteUserFromAPI(wasteUserId);
+  async function deleteUser(wasteUser) {
+    const { id } = wasteUser;
 
-    setUsers(users.filter((user) => user.id !== wasteUserId));
+    await deleteUserFromAPI(id);
+
+    setUsers(users.filter((user) => user.id !== id));
   }
 
   return (
