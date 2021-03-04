@@ -5,6 +5,8 @@ import AddUserForm from './forms/AddUserForm';
 import EditUserForm from './forms/EditUserForm';
 import { getUsersFromAPI, postUserToAPI, deleteUserFromAPI, putUserToAPI } from './utils/api';
 
+const container = "container";
+
 const fields = [
   { key: "name", label: "Name" }, //first element scope="row" in table
   { key: "surname", label: "Surname" },
@@ -52,25 +54,84 @@ function App() {
 
     await deleteUserFromAPI(id);
 
-    setUsers(users.filter((user) => user.id !== id));
+    setUsers(users.filter(user => user.id !== id));
   }
 
   return (
-    <div className="container-lg">
-      <h1>Test React with CRUD</h1>
-      <div className="row">
-        <div className="col-lg-4">
-          {editing
-            ? <EditUserForm fields={fields} currentUser={currentUser} updateUser={updateUser} />
-            : <AddUserForm fields={fields} addUser={addUser} />
-          }
-        </div>
-        <div className="col-lg-8">
-          <h2>View users</h2>
-          <UserTable fields={fields} users={users} editUser={editUser} deleteUser={deleteUser} />
-        </div>
-      </div>
-    </div>
+    <React.StrictMode>
+      <header className={container}>
+        <nav className="navbar navbar-light bg-light">
+          <div className="container-fluid">
+            <a className="navbar-brand" href="./">Test React with CRUD</a>
+            <form className="d-flex">
+              <select className="form-select"
+                aria-label="Users properties"
+              >
+                {fields.map(field => (
+                  <option key={field.key} name={field.key} >
+                    {field.label}
+                  </option>
+                ))}
+              </select>
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button
+                className="btn btn-outline-success"
+                type="submit"
+              >Search</button>
+            </form>
+            <button
+              className="btn btn-primary"
+              type="button"
+            >Add new user</button>
+          </div>
+        </nav>
+      </header>
+      <main className={container}>
+        <h2>View users</h2>
+        <UserTable
+          fields={fields}
+          users={users}
+          editUser={editUser}
+          deleteUser={deleteUser}
+        />
+      </main>
+      <footer className={container}>
+        <nav aria-label="Pagination of users list">
+          <ul className="pagination justify-content-center">
+            <li className="page-item disabled">
+              <a
+                className="page-link"
+                href="./?page=1"
+                tabIndex="-1"
+                aria-disabled="true"
+              >Previous</a>
+            </li>
+            <li className="page-item active" aria-current="page">
+              <a
+                className="page-link"
+                href="./?page=1"
+              >1</a></li>
+            <li className="page-item">
+              <a
+                className="page-link"
+                href="./?page=2"
+              >2</a>
+            </li>
+            <li className="page-item">
+              <a
+                className="page-link"
+                href="./?page=2"
+              >Next</a>
+            </li>
+          </ul>
+        </nav>
+      </footer>
+    </React.StrictMode>
   );
 }
 
