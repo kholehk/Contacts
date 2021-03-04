@@ -1,39 +1,34 @@
 import axios from 'axios';
 
-class ContactsAPI {
+class crudAPI {
   constructor(origin, pathname = '') {
-    this.pathname = pathname;
     this.origin = origin;
+    this.pathname = pathname;
   }
 
   set origin(value) {
-    this.origin = this.origin || value;
+    this._origin = this._origin || value;
+  }
+
+  get origin() {
+    return this._origin;
   }
 
   set pathname(value) {
-    this.pathname = this.pathname || value;
+    this._pathname = this._pathname || value;
   }
 
-  set href(value) {
-    this.href = this.origin + this.pathname + value;
+  get pathname() {
+    return this._pathname;
   }
 
-  async get(id = '') {
-    this.href = `/${id}`;
+  get href() {
+    return this.origin + this.pathname;
+  }
 
+  async create(user) {
     try {
-      const response = await axios.get(this.href);
-
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
-  }
-
-  async post(user) {
-    try {
-      const response = await axios.post(this.url, user);
+      const response = await axios.post(this.href, user);
 
       return response.data;
     } catch (error) {
@@ -41,11 +36,20 @@ class ContactsAPI {
     }
   }
 
-  async put(user) {
-    this.pathname += `/${user.id}`;
-
+  async read(id = '') {
     try {
-      const response = await axios.put(this.url, user);
+      const response = await axios.get(`${this.href}/${id}`);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  async update(user) {
+    try {
+      const response = await axios.put(`${this.href}/${user.id}`, user);
 
       return response.data;
     } catch (error) {
@@ -53,11 +57,9 @@ class ContactsAPI {
     }
   }
 
-  async deleteUserFromAPI(id) {
-    const url = new URL(`${urlAPI.pathname}/${id}`, urlAPI);
-
+  async delete(id) {
     try {
-      const response = await axios.delete(url);
+      const response = await axios.delete(`${this.href}/${id}`);
 
       return response.status;
     } catch (error) {
@@ -66,4 +68,4 @@ class ContactsAPI {
   }
 }
 
-export default ContactsAPI;
+export default crudAPI;

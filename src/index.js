@@ -1,21 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import ContactsAPI from './utils/api';
+//import App from './App';
+import crudAPI from './utils/api';
 
-const originAPI = 'https://my-json-server.typicode.com';
-const pathnameAPI = '/kholehk/Contacts/index';
+const originAPI = 'https://randomuser.me';
+const pathnameAPI = '/api';
 
-const contactsAPI = new ContactsAPI(originAPI, pathnameAPI);
+const contactsAPI = new crudAPI(originAPI, pathnameAPI);
 
-console.log(contactsAPI.get());
-debugger;
+contactsAPI.create({ name: "Piter", surname: "Pen" })
+  .then(response => console.log(response));
 
-console.log(contactsAPI.get(0));
-debugger;
+contactsAPI.read()
+  .then(response => console.log(response));
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+contactsAPI.read('/?results=50')
+  .then(response => console.log(response));
+
+contactsAPI.update({ id: "0", name: "Tim", surname: "Building" })
+  .then(response => console.log(response));
+
+contactsAPI.delete(0)
+  .then(response => console.log(response));
+
+// ReactDOM.render(
+//   <App />,
+//   document.getElementById('root')
+// );
