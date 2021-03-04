@@ -36,9 +36,9 @@ class crudAPI {
     }
   }
 
-  async read(id = '') {
+  async read(params = '') {
     try {
-      const response = await axios.get(`${this.href}/${id}`);
+      const response = await axios.get(`${this.href}/${params}`);
 
       return response.data;
     } catch (error) {
