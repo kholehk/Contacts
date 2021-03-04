@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import UserTable from './table/UserTable';
-import AddUserForm from './forms/AddUserForm';
-import EditUserForm from './forms/EditUserForm';
+import ContactsTable from './table/ContactsTable';
+import ContactForm from './form/ContactForm';
 import { getUsersFromAPI, postUserToAPI, deleteUserFromAPI, putUserToAPI } from './utils/api';
 
 const container = "container";

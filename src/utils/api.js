@@ -1,54 +1,69 @@
 import axios from 'axios';
 
-const urlAPI = new URL("/kholehk/FakeJSON/users", "https://my-json-server.typicode.com");
-
-async function getUsersFromAPI(id = '') {
-  const url = new URL(`${id}`, urlAPI);
-
-  try {
-    const response = await axios.get(url);
-
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return [];
+class ContactsAPI {
+  constructor(origin, pathname = '') {
+    this.pathname = pathname;
+    this.origin = origin;
   }
-};
 
-async function postUserToAPI(user) {
-  const url = new URL(urlAPI);
-
-  try {
-    const response = await axios.post(url, user);
-
-    return response.data;
-  } catch (error) {
-    console.error(error);
+  set origin(value) {
+    this.origin = this.origin || value;
   }
-};
 
-async function putUserToAPI(user) {
-  const url = new URL(`${urlAPI.pathname} / ${user.id}`, urlAPI);
-
-  try {
-    const response = await axios.put(url, user);
-
-    return response.data;
-  } catch (error) {
-    console.error(error);
+  set pathname(value) {
+    this.pathname = this.pathname || value;
   }
-};
 
-async function deleteUserFromAPI(id) {
-  const url = new URL(`${urlAPI.pathname}/${id}`, urlAPI);
-
-  try {
-    const response = await axios.delete(url);
-
-    return response.status;
-  } catch (error) {
-    console.error(error);
+  set href(value) {
+    this.href = this.origin + this.pathname + value;
   }
-};
 
-export { getUsersFromAPI, postUserToAPI, putUserToAPI, deleteUserFromAPI };
+  async get(id = '') {
+    this.href = `/${id}`;
+
+    try {
+      const response = await axios.get(this.href);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
+  async post(user) {
+    try {
+      const response = await axios.post(this.url, user);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async put(user) {
+    this.pathname += `/${user.id}`;
+
+    try {
+      const response = await axios.put(this.url, user);
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async deleteUserFromAPI(id) {
+    const url = new URL(`${urlAPI.pathname}/${id}`, urlAPI);
+
+    try {
+      const response = await axios.delete(url);
+
+      return response.status;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+export default ContactsAPI;
