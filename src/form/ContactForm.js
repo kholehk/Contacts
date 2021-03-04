@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Input from './Input';
 
-function AddUserForm(props) {
+function ContactForm(props) {
   const { fields, addUser } = props;
 
   const initialFormState = fields.reduce((acc, cur) => {
@@ -46,4 +46,4 @@ function AddUserForm(props) {
   )
 }
 
-export default AddUserForm;
+export default ContactForm;

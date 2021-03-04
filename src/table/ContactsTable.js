@@ -1,6 +1,6 @@
 import React from 'react';
 
-function UserTable(props) {
+function ContactsTable(props) {
   const { fields, users, editUser, deleteUser } = props;
 
   return (
@@ -89,4 +89,4 @@ function ConfirmDelete(props) {
   )
 }
 
-export default UserTable;
+export default ContactsTable;

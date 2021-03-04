@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
+
+import crudAPI from './utils/api';
 import ContactsTable from './table/ContactsTable';
 import ContactForm from './form/ContactForm';
-import { getUsersFromAPI, postUserToAPI, deleteUserFromAPI, putUserToAPI } from './utils/api';
+
+const originAPI = 'https://my-json-server.typicode.com';
+const pathnameAPI = '/kholehk/Contacts/index';
+
+const contactsAPI = new crudAPI(originAPI, pathnameAPI);
 
 const container = "container";
 
@@ -13,8 +19,8 @@ const fields = [
   { key: "phone", label: "Phone", type: "tel" },
   { key: "email", label: "Email", type: "email" },
   {
-    key: "timestamp", label: "Create/Update", type: "datetime-local",
-    calculate: (stamp) => Number.isNaN(+stamp) ? "" : format(+stamp, "dd.MM.yyyy HH:mm")
+    key: "createAt", label: "Create/Update", type: "datetime-local",
+    calculate: (stamp) => Number.isNaN(+stamp) ? "" : format(+stamp)
   },
 ];
 
@@ -24,34 +30,34 @@ function App() {
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    getUsersFromAPI()
+    contactsAPI.read()
       .then(usersFromAPI => setUsers(usersFromAPI))
       .catch(e => console.error(e))
   }, []);
 
-  async function addUser(newUser) {
-    const addedUser = await postUserToAPI(newUser);
+  async function createUser(newUser) {
+    const createdUser = await contactsAPI.create(newUser);
 
-    setUsers([...users, addedUser]);
-    setCurrentUser({});
+    setUsers([...users, createdUser]);
   }
 
-  function editUser(current) {
+  function editCurrentUser(selectedUser) {
     setEditing(true);
-    setCurrentUser(current);
+    setCurrentUser(selectedUser);
   }
 
-  async function updateUser(id, receivedUser) {
-    const userFromApi = await putUserToAPI(id, receivedUser);
+  async function updateUser(receivedUser) {
+    const updatedUser = await contactsAPI.update(receivedUser);
 
+    setUsers(users.map(user => (user.id === updatedUser.id ? updatedUser : user)));
+    setCurrentUser({});
     setEditing(false);
-    setUsers(users.map(user => (user.id === id ? userFromApi : user)));
   }
 
   async function deleteUser(wasteUser) {
     const { id } = wasteUser;
 
-    await deleteUserFromAPI(id);
+    await contactsAPI.delete(id);
 
     setUsers(users.filter(user => user.id !== id));
   }
@@ -91,11 +97,11 @@ function App() {
         </nav>
       </header>
       <main className={container}>
-        <h2>View users</h2>
-        <UserTable
+        <h2>View contacts</h2>
+        <ContactsTable
           fields={fields}
           users={users}
-          editUser={editUser}
+          editUser={editCurrentUser}
           deleteUser={deleteUser}
         />
       </main>
