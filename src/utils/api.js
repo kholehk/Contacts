@@ -26,9 +26,9 @@ class crudAPI {
     return this.origin + this.pathname;
   }
 
-  async create(user) {
+  async create(data) {
     try {
-      const response = await axios.post(this.href, user);
+      const response = await axios.post(this.href, data);
 
       return response.data;
     } catch (error) {
@@ -47,9 +47,9 @@ class crudAPI {
   }
 
 
-  async update(user) {
+  async update(data) {
     try {
-      const response = await axios.put(`${this.href}/${user.id}`, user);
+      const response = await axios.put(`${this.href}/${data.id}`, data);
 
       return response.data;
     } catch (error) {

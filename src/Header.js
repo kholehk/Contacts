@@ -1,0 +1,25 @@
+import React from 'react';
+import SearchForm from './form/SearchForm';
+
+function Header(props) {
+  const { container, fields } = props;
+
+  return (
+    <header className={container}>
+      <nav className="navbar navbar-light bg-light">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="./">Contacts</a>
+          <SearchForm fields={fields} />
+          <button
+            className="btn btn-primary"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#contactForm"
+          >New contact</button>
+        </div>
+      </nav>
+    </header>
+  )
+}
+
+export default Header;
