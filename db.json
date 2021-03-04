@@ -1,0 +1,16 @@
+{
+  "contacts": [
+    {
+      "id": "0",
+      "name": "Piter",
+      "surname": "Parker",
+      "birthday": "9876543210",
+      "phone": "0123456789",
+      "email": "qwerty@asdfg.com",
+      "timestamp": "98765432101"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
