@@ -4,6 +4,9 @@ import crudAPI from './utils/api';
 import ContactForm from './form/ContactForm';
 import ContactsTable from './table/ContactsTable';
 import ConfirmDelete from './form/ConfirmDelete';
+import Loader from './loader/Loader';
+
+const NUMBER_OF_ROWS = 10;
 
 const originAPI = 'https://my-json-server.typicode.com';
 const pathnameAPI = '/kholehk/Contacts/index';
@@ -20,9 +23,29 @@ function Main(props) {
     setCurrentContact,
   } = props;
 
+  const [book, setBook] = useState([]);
   const [contacts, setContacts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const loadingAPI = async (action) => { setIsLoading(true); await action(); setIsLoading(false); }
 
-  useEffect(() => readContacts(), []);
+  const collectPages = (contacts) => contacts.reduce(
+    (acc, cur, idx) => {
+      const page = Math.floor(idx / NUMBER_OF_ROWS);
+
+      if (page === acc.length) { acc.push([]); }
+      acc[page].push(cur);
+      return acc;
+    },
+    []
+  );
+
+  useEffect(() => {
+    loadingAPI(readContacts);
+  }, []);
+
+  useEffect(() => {
+    setBook(collectPages(contacts));
+  }, [contacts]);
 
   async function createContact(newContact) {
     const createdContact = await contactsAPI.create(newContact);
@@ -64,14 +87,19 @@ function Main(props) {
         currentContact={currentContact}
         submitContact={isNewContact(currentContact) ? createContact : updateContacts}
       />
-      <ContactsTable
-        fields={fields}
-        contacts={contacts}
-        setCurrentContact={setCurrentContact}
-      />
+      {isLoading
+        ? <Loader />
+        : (<ContactsTable
+          isLoading={isLoading}
+          fields={fields}
+          contacts={contacts}
+          setCurrentContact={setCurrentContact}
+        />)
+      }
       <ConfirmDelete
         contact={currentContact}
-        deleteContact={deleteContact} />
+        deleteContact={deleteContact}
+      />
     </main>
   )
 }

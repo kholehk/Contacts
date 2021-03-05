@@ -13,13 +13,14 @@ function ContactsTable(props) {
         </tr>
       </thead>
       <tbody>
-        {contacts.length > 0
-          ? <TableBody
-            fields={fields}
-            contacts={contacts}
-            setCurrentContact={setCurrentContact}
-          />
-          : <tr><td colSpan="7">No Contacts</td></tr>
+        {
+          contacts.length > 0
+            ? <TableBody
+              fields={fields}
+              contacts={contacts}
+              setCurrentContact={setCurrentContact}
+            />
+            : <tr><td colSpan="7">No Contacts</td></tr>
         }
       </tbody>
     </table>
