@@ -60,9 +60,9 @@ function TableRow(props) {
       )
       return (
         < th key={field.key} scope="row" >
-          <strong className="row">{contact[field.key]}</strong>
+          <strong className="row mx-1">{contact[field.key]}</strong>
           <div
-            className="row flex-nowrap"
+            className="row flex-nowrap mx-1"
             onClick={() => setCurrentContact(contact)}
           >
             <button

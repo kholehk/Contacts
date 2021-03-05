@@ -4,7 +4,7 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 
-const container = "container";
+const container = "container-lg";
 
 const fields = [
   { key: "name", label: "Name" }, //first element scope="row" in table
@@ -39,8 +39,8 @@ function App() {
       />
       <Footer
         container={container}
-        first={0}
-        last={2}
+        firstPage={0}
+        lastPage={2}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
