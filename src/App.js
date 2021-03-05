@@ -19,7 +19,7 @@ const fields = [
 ];
 
 function App() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [currentContact, setCurrentContact] = useState({});
 
   return (
@@ -39,6 +39,8 @@ function App() {
       />
       <Footer
         container={container}
+        first={0}
+        last={2}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />

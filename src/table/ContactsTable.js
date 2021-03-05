@@ -1,37 +1,40 @@
 import React from 'react';
 
 function ContactsTable(props) {
-  const { fields, contacts, setCurrentContact } = props;
+  const { fields, book, currentPage, setCurrentContact } = props;
 
   return (
-    <table className="table">
-      <thead>
-        <tr>
-          {fields.map(
-            field => <th key={field.key} scope="col">{field.label}</th>
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {
-          contacts.length > 0
-            ? <TableBody
-              fields={fields}
-              contacts={contacts}
-              setCurrentContact={setCurrentContact}
-            />
-            : <tr><td colSpan="7">No Contacts</td></tr>
-        }
-      </tbody>
-    </table>
+    <div className="table-responsive">
+      <table className="table">
+        <thead>
+          <tr>
+            {fields.map(
+              field => <th key={field.key} scope="col">{field.label}</th>
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            book.length > 0 && book[currentPage] && book[currentPage].length > 0
+              ? <TableBody
+                fields={fields}
+                book={book}
+                currentPage={currentPage}
+                setCurrentContact={setCurrentContact}
+              />
+              : <tr><td colSpan="7">No Contacts</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 function TableBody(props) {
-  const { fields, contacts, setCurrentContact } = props;
+  const { fields, book, currentPage, setCurrentContact } = props;
 
   return (
-    contacts.map(contact => (
+    book[currentPage].map(contact => (
       <tr key={contact.id}>
         <TableRow
           fields={fields}

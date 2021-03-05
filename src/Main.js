@@ -90,9 +90,9 @@ function Main(props) {
       {isLoading
         ? <Loader />
         : (<ContactsTable
-          isLoading={isLoading}
           fields={fields}
-          contacts={contacts}
+          book={book}
+          currentPage={currentPage}
           setCurrentContact={setCurrentContact}
         />)
       }
