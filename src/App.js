@@ -20,18 +20,22 @@ const fields = [
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentContact, setCurrentContact] = useState({});
 
   return (
     <React.StrictMode>
       <Header
         container={container}
         fields={fields}
+        setCurrentContact={setCurrentContact}
       />
       <Main
         container={container}
         fields={fields}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        currentContact={currentContact}
+        setCurrentContact={setCurrentContact}
       />
       <Footer
         container={container}

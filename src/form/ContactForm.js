@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Input from './Input';
 
 function ContactForm(props) {
   const { title, fields, currentContact, submitContact } = props;
-  const [contact, setContact] = useState(currentContact);
+  const initContact = useCallback(
+    (obj) => fields.reduce((acc, cur) => {
+      acc[cur.key] = obj[cur.key] || '';
+      return acc;
+    }, { id: currentContact.id || null }),
+    [currentContact, fields]
+  );
+  const [contact, setContact] = useState(initContact(currentContact));
 
-  useEffect(() => setContact(props.currentContact), [props]);
+  useEffect(() => setContact(initContact(currentContact)), [currentContact, initContact]);
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -21,14 +28,11 @@ function ContactForm(props) {
       aria-labelledby="contactFormLabel"
       aria-hidden="true"
     >
-      <div className="modal-dialog">
-        <form
-          className="modal-content"
-          onSubmit={async (event) => {
-            event.preventDefault();
-            await submitContact({ ...contact, createAt: Date.now() });
-          }}
-        >
+      <form
+        id="contactFormDialog"
+        className="modal-dialog"
+      >
+        <div className="modal-content">
           <div className="modal-header">
             <h5
               className="modal-title"
@@ -61,13 +65,18 @@ function ContactForm(props) {
               data-bs-dismiss="modal"
             >Close</button>
             <button
+              formTarget="contactFormDialog"
               type="submit"
               className="btn btn-primary"
               data-bs-dismiss="modal"
+              onClick={async (event) => {
+                event.preventDefault();
+                await submitContact({ ...contact, createAt: Date.now() });
+              }}
             >{title}</button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   )
 }

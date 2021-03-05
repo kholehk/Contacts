@@ -2,7 +2,7 @@ import React from 'react';
 import SearchForm from './form/SearchForm';
 
 function Header(props) {
-  const { container, fields } = props;
+  const { container, fields, setCurrentContact } = props;
 
   return (
     <header className={container}>
@@ -13,6 +13,7 @@ function Header(props) {
           <button
             className="btn btn-primary"
             type="button"
+            onClick={() => setCurrentContact({})}
             data-bs-toggle="modal"
             data-bs-target="#contactForm"
           >New contact</button>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 function ContactsTable(props) {
-  const { fields, contacts, action } = props;
+  const { fields, contacts, setCurrentContact } = props;
 
   return (
     <table className="table">
@@ -17,7 +17,7 @@ function ContactsTable(props) {
           ? <TableBody
             fields={fields}
             contacts={contacts}
-            action={action}
+            setCurrentContact={setCurrentContact}
           />
           : <tr><td colSpan="7">No Contacts</td></tr>
         }
@@ -27,7 +27,7 @@ function ContactsTable(props) {
 }
 
 function TableBody(props) {
-  const { fields, contacts, action } = props;
+  const { fields, contacts, setCurrentContact } = props;
 
   return (
     contacts.map(contact => (
@@ -35,7 +35,7 @@ function TableBody(props) {
         <TableRow
           fields={fields}
           contact={contact}
-          action={action}
+          setCurrentContact={setCurrentContact}
         />
       </tr>)
     )
@@ -43,7 +43,7 @@ function TableBody(props) {
 }
 
 function TableRow(props) {
-  const { fields, contact, action } = props;
+  const { fields, contact, setCurrentContact } = props;
 
   return (
     fields.map((field, idx) => {
@@ -57,20 +57,21 @@ function TableRow(props) {
       return (
         < th key={field.key} scope="row" >
           <strong className="row">{contact[field.key]}</strong>
-          <div className="row flex-nowrap">
+          <div
+            className="row flex-nowrap"
+            onClick={() => setCurrentContact(contact)}
+          >
             <button
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#contactForm"
               className="btn btn-sm btn-primary col-auto"
-              onClick={() => action(contact)}
             >Edit</button>
             <button
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#confirmDelete"
               className="btn btn-sm btn-danger col-auto mx-1"
-              onClick={() => action(contact)}
             >Delete</button>
           </div>
         </th>

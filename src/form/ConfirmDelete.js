@@ -4,7 +4,13 @@ function ConfirmDelete(props) {
   const { contact, deleteContact } = props;
 
   return (
-    <div className="modal fade" id="confirmDelete" tabIndex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div
+      className="modal fade"
+      id="confirmDelete"
+      tabIndex="-1"
+      aria-labelledby="confirmDeleteLabel"
+      aria-hidden="true"
+    >
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">

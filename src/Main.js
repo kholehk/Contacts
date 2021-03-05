@@ -16,21 +16,11 @@ function Main(props) {
     fields,
     currentPage,
     setCurrentPage,
+    currentContact,
+    setCurrentContact,
   } = props;
 
   const [contacts, setContacts] = useState([]);
-  const [currentContact, setCurrentContact] = useState({});
-  const [action, setAction] = useState(false);
-
-  function actionCurrentContact(selectedContact) {
-    setAction(true);
-    setCurrentContact(selectedContact);
-  }
-
-  function actionCancel() {
-    setAction(false);
-    setCurrentContact({});
-  }
 
   useEffect(() => readContacts(), []);
 
@@ -64,20 +54,24 @@ function Main(props) {
     setContacts(contacts.filter(contact => contact.id !== id));
   }
 
+  const isNewContact = (contact) => !(Object.keys(contact).length);
+
   return (
     <main className={container}>
       <ContactForm
-        title={action ? 'Edit contact' : 'Add contact'}
+        title={isNewContact(currentContact) ? 'Add contact' : 'Edit contact'}
         fields={fields}
         currentContact={currentContact}
-        submitContact={action ? updateContacts : createContact}
+        submitContact={isNewContact(currentContact) ? createContact : updateContacts}
       />
       <ContactsTable
         fields={fields}
         contacts={contacts}
-        action={actionCurrentContact}
+        setCurrentContact={setCurrentContact}
       />
-      <ConfirmDelete contact={currentContact} deleteContact={deleteContact} />
+      <ConfirmDelete
+        contact={currentContact}
+        deleteContact={deleteContact} />
     </main>
   )
 }
