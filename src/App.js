@@ -94,6 +94,8 @@ function App() {
       <Header
         container={container}
         fields={fields}
+        contacts={contacts}
+        setContacts={setContacts}
         setCurrentContact={setCurrentContact}
       />
       <Main
