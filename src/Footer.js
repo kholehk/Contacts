@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 function Footer(props) {
   const { container, firstPage, lastPage, currentPage, setCurrentPage } = props;
@@ -27,18 +27,30 @@ function Footer(props) {
   )
 }
 
+const navButtonsRef = {};
+
 function NavButton(props) {
   const { title, condition, page, setCurrentPage } = props;
 
+  navButtonsRef[title] = useRef();
+  const neighborButtonTitle = Object.keys(navButtonsRef).find(key => key !== title);
+
+  const attributes = {
+    className: "page-link",
+    href: `./?page=${!condition && page}`,
+    onClick: (event) => { event.preventDefault(); setCurrentPage(page); },
+    ref: navButtonsRef[title],
+  };
+
+  if (condition) {
+    attributes.tabIndex = "-1";
+    attributes["aria-disabled"] = "true";
+    neighborButtonTitle && navButtonsRef[neighborButtonTitle].current.focus();
+  }
+
   return (
     <li className={"page-item" + (condition ? " disabled" : "")}>
-      <a
-        className="page-link"
-        href={`./?page=${condition ? "" : page}`}
-        tabIndex={condition ? "-1" : ""}
-        aria-disabled={condition}
-        onClick={(event) => { event.preventDefault(); setCurrentPage(page); }}
-      >{title}</a>
+      <a{...attributes}>{title}</a>
     </li>
   )
 }
