@@ -1,7 +1,7 @@
 import React from 'react';
 
 function ContactsTable(props) {
-  const { fields, book, currentPage, setCurrentContact } = props;
+  const { fields, contactsOnPage, setCurrentContact } = props;
 
   return (
     <div className="table-responsive">
@@ -15,11 +15,10 @@ function ContactsTable(props) {
         </thead>
         <tbody>
           {
-            book.length > 0 && book[currentPage] && book[currentPage].length > 0
+            contactsOnPage.length
               ? <TableBody
                 fields={fields}
-                book={book}
-                currentPage={currentPage}
+                contactsOnPage={contactsOnPage}
                 setCurrentContact={setCurrentContact}
               />
               : <tr><td colSpan="7">No Contacts</td></tr>
@@ -31,10 +30,10 @@ function ContactsTable(props) {
 }
 
 function TableBody(props) {
-  const { fields, book, currentPage, setCurrentContact } = props;
+  const { fields, contactsOnPage, setCurrentContact } = props;
 
   return (
-    book[currentPage].map(contact => (
+    contactsOnPage.map(contact => (
       <tr key={contact.id}>
         <TableRow
           fields={fields}
