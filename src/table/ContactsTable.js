@@ -15,7 +15,7 @@ function ContactsTable(props) {
         </thead>
         <tbody>
           {
-            contactsOnPage.length
+            Array.isArray(contactsOnPage) && contactsOnPage.length
               ? <TableBody
                 fields={fields}
                 contactsOnPage={contactsOnPage}

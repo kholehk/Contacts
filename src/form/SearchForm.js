@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function SearchForm(props) {
   const { fields, contacts, setContacts } = props;
-  const [search, setSearch] = useState({ name: fields[0].key, value: "" });
+  const [search, setSearch] = useState({ key: fields[0].key, value: "" });
 
   function handleInputChange(event) {
     const { value } = event.target;
@@ -14,7 +14,7 @@ function SearchForm(props) {
     const { options } = event.target;
     const field = [...options].find(option => option.selected);
 
-    setSearch({ ...search, name: field.label });
+    setSearch({ ...search, key: field.dataset.key, type: field.dataset.type });
   }
 
   return (
@@ -27,7 +27,8 @@ function SearchForm(props) {
         {fields.map(field => (
           <option
             key={field.key}
-            label={field.key}
+            data-key={field.key}
+            data-type={field.type}
           >
             {field.label}
           </option>
@@ -35,10 +36,10 @@ function SearchForm(props) {
       </select>
       <input
         className="form-control me-2"
-        type="search"
         placeholder="Search"
         aria-label="Search"
-        name={search.name}
+        type={search.type || "search"}
+        name={search.key}
         value={search.value}
         onChange={(event) => handleInputChange(event)}
       />
@@ -48,7 +49,7 @@ function SearchForm(props) {
         onClick={(event) => {
           event.preventDefault();
 
-          const filteredContacts = contacts.filter(contact => contact[search.name] === search.value);
+          const filteredContacts = contacts.filter(contact => contact[search.key] === search.value);
           setContacts(filteredContacts ?? []);
         }}
       >Search</button>

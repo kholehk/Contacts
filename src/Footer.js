@@ -19,13 +19,13 @@ function Footer(props) {
         <ul className="pagination justify-content-center">
           <NavButton
             title={"Previous"}
-            condition={currentPage === firstPage}
+            condition={currentPage === firstPage || lastPage <= firstPage}
             page={prevPage}
             setCurrentPage={setCurrentPage}
           />
           <NavButton
             title={"Next"}
-            condition={currentPage === lastPage}
+            condition={currentPage === lastPage || lastPage <= firstPage}
             page={nextPage}
             setCurrentPage={setCurrentPage}
           />
@@ -41,7 +41,7 @@ function NavButton(props) {
   const { title, condition, page, setCurrentPage } = props;
 
   navButtonsRef[title] = useRef();
-  const neighborButtonTitle = Object.keys(navButtonsRef).find(key => key !== title);
+  const neighborButton = Object.keys(navButtonsRef).find(key => key !== title);
 
   const attributes = {
     className: "page-link",
@@ -53,7 +53,8 @@ function NavButton(props) {
   if (condition) {
     attributes.tabIndex = "-1";
     attributes["aria-disabled"] = "true";
-    neighborButtonTitle && navButtonsRef[neighborButtonTitle].current.focus();
+    debugger;
+    neighborButton && navButtonsRef[neighborButton].current && navButtonsRef[neighborButton].current.focus();
   }
 
   return (
