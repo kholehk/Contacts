@@ -10,7 +10,7 @@ function Input(props) {
         htmlFor={field.key}
       >{field.label}</label>
       <input
-        type={field.type || "text"}
+        type={field.type}
         className="form-control"
         id={field.key}
         name={field.key}

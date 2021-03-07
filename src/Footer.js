@@ -53,7 +53,6 @@ function NavButton(props) {
   if (condition) {
     attributes.tabIndex = "-1";
     attributes["aria-disabled"] = "true";
-    debugger;
     neighborButton && navButtonsRef[neighborButton].current && navButtonsRef[neighborButton].current.focus();
   }
 

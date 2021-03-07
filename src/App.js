@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import format from 'date-fns/format';
 
 import crudAPI from './utils/api';
 import Header from './Header';
@@ -16,15 +17,20 @@ const NUMBER_OF_ROWS = 10;
 
 const container = "container-lg";
 
+const calculateDate = (stamp, template, isFormat = true) => isFormat ? format(+stamp, template) : new Date(stamp);
+
 const fields = [
-  { key: "name", label: "Name" }, //first element scope="row" in table
-  { key: "surname", label: "Surname" },
-  { key: "birthday", label: "Birthday", type: "date" },
+  { key: "name", label: "Name", type: "text" }, //first element scope="row" in table
+  { key: "surname", label: "Surname", type: "text" },
+  {
+    key: "birthday", label: "Birthday", type: "date",
+    calculate: (stamp, isFormat) => calculateDate(+stamp, "dd.MM.yyyy", isFormat),
+  },
   { key: "phone", label: "Phone", type: "tel" },
   { key: "email", label: "Email", type: "email" },
   {
-    key: "createAt", label: "Create/Update", type: "datetime-local",
-    calculate: (stamp) => stamp
+    key: "createAt", label: "Create/Update",
+    calculate: (stamp, isFormat) => calculateDate(+stamp, "dd.MM.yyyy hh:mm", isFormat),
   },
 ];
 

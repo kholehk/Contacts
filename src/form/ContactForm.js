@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+
 import Input from './Input';
 
 function ContactForm(props) {
@@ -46,17 +47,15 @@ function ContactForm(props) {
             />
           </div>
           <div className="modal-body">
-            {fields.map(field => {
-              if (field.calculate) return "";
-              return (
-                <Input
-                  key={field.key}
-                  field={field}
-                  contact={contact}
-                  handleInputChange={handleInputChange}
-                />
-              )
-            })}
+            {fields.map(field => field.type
+              ? <Input
+                key={field.key}
+                field={field}
+                contact={contact}
+                handleInputChange={handleInputChange}
+              />
+              : ""
+            )}
           </div>
           <div className="modal-footer">
             <button
@@ -71,6 +70,9 @@ function ContactForm(props) {
               data-bs-dismiss="modal"
               onClick={async (event) => {
                 event.preventDefault();
+
+                fields.forEach(field => field.calculate && field.calculate instanceof Function && { ...contact, field: field.calculate(contact.field, false) });
+                debugger;
                 await submitContact({ ...contact, createAt: Date.now() });
               }}
             >{title}</button>
