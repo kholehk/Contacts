@@ -6,6 +6,8 @@ function ContactForm(props) {
   const { title, fields, currentContact, submitContact } = props;
   const initContact = useCallback(
     (obj) => fields.reduce((acc, cur) => {
+      if (!cur.type) return acc;
+
       acc[cur.key] = obj[cur.key] || '';
       return acc;
     }, { id: currentContact.id || null }),
@@ -47,14 +49,14 @@ function ContactForm(props) {
             />
           </div>
           <div className="modal-body">
-            {fields.map(field => field.type
-              ? <Input
+            {fields.map(field => field.auto
+              ? ""
+              : <Input
                 key={field.key}
                 field={field}
                 contact={contact}
                 handleInputChange={handleInputChange}
               />
-              : ""
             )}
           </div>
           <div className="modal-footer">
@@ -71,9 +73,19 @@ function ContactForm(props) {
               onClick={async (event) => {
                 event.preventDefault();
 
-                fields.forEach(field => field.calculate && field.calculate instanceof Function && { ...contact, field: field.calculate(contact.field, false) });
-                debugger;
-                await submitContact({ ...contact, createAt: Date.now() });
+                const calculatedContact = fields.reduce((acc, cur) => {
+                  const { key, auto, calculate } = cur;
+
+                  if (auto && auto instanceof Function)
+                    return { ...acc, [key]: auto() };
+
+                  if (calculate && calculate instanceof Function)
+                    return { ...acc, [key]: calculate(contact[key], false) };
+
+                  return { ...acc, [key]: contact[key] };
+                }, {});
+
+                await submitContact(calculatedContact);
               }}
             >{title}</button>
           </div>

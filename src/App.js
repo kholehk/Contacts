@@ -17,20 +17,22 @@ const NUMBER_OF_ROWS = 10;
 
 const container = "container-lg";
 
-const calculateDate = (stamp, template, isFormat = true) => isFormat ? format(+stamp, template) : new Date(stamp);
+const calculateDate = (stamp, template, isFormat = true) => isFormat
+  ? format(+stamp, template)
+  : (new Date(stamp)).getTime();
 
 const fields = [
   { key: "name", label: "Name", type: "text" }, //first element scope="row" in table
   { key: "surname", label: "Surname", type: "text" },
   {
     key: "birthday", label: "Birthday", type: "date",
-    calculate: (stamp, isFormat) => calculateDate(+stamp, "dd.MM.yyyy", isFormat),
+    calculate: (stamp, isFormat) => calculateDate(stamp, "dd.MM.yyyy", isFormat),
   },
   { key: "phone", label: "Phone", type: "tel" },
   { key: "email", label: "Email", type: "email" },
   {
-    key: "createAt", label: "Create/Update",
-    calculate: (stamp, isFormat) => calculateDate(+stamp, "dd.MM.yyyy hh:mm", isFormat),
+    key: "createAt", label: "Create/Update", type: "datetime-local", auto: () => Date.now(),
+    calculate: (stamp, isFormat) => calculateDate(stamp, "dd.MM.yyyy hh:mm", isFormat),
   },
 ];
 

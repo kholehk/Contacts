@@ -49,7 +49,20 @@ function SearchForm(props) {
         onClick={(event) => {
           event.preventDefault();
 
-          const filteredContacts = contacts.filter(contact => contact[search.key] === search.value);
+          const calculatedSearch = fields.reduce((acc, cur) => {
+            const { key, calculate } = cur;
+
+            if (key !== search.key) return acc;
+
+            if (calculate && calculate instanceof Function)
+              return { ...acc, value: calculate(search.value, false) }
+
+            return { ...acc, value: search.value };
+          }, { key: search.key });
+
+          const filteredContacts = contacts
+            .filter(contact => contact[calculatedSearch.key] === calculatedSearch.value);
+
           setContacts(filteredContacts ?? []);
         }}
       >Search</button>
