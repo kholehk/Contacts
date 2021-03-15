@@ -1,3 +1,3 @@
-FrontEnd: https://kholehk.github.io/Contacts
+FrontEnd: https://kholehk.github.io/contacts
 
-BackEnd: https://my-json-server.typicode.com/kholehk/Contacts/index
+BackEnd: https://my-json-server.typicode.com/kholehk/contacts/index
