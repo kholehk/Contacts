@@ -9,7 +9,7 @@ import ContactForm from './form/ContactForm';
 import ConfirmDelete from './form/ConfirmDelete';
 
 const originAPI = 'https://my-json-server.typicode.com';
-const pathnameAPI = '/kholehk/Contacts/index';
+const pathnameAPI = '/kholehk/contacts/index';
 
 const contactsAPI = new crudAPI(originAPI, pathnameAPI);
 
